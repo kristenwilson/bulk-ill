@@ -134,7 +134,7 @@ def read_csv(filepath: str):
         csv.Error: If the CSV is malformed.
     """
 
-    with open(filepath, 'r', encoding='utf-8') as source_file:
+    with open(filepath, 'r', encoding='utf-8-sig') as source_file:
         reader = csv.DictReader(source_file)
         for row in reader:
             yield row

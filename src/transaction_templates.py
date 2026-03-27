@@ -21,6 +21,7 @@ Editor: Aditi Singh, NC State Libraries, asingh39@ncsu.edu
 
 import yaml
 import logging
+import os
 from typing import Dict, Optional, Tuple
 
 logger = logging.getLogger(__name__)
@@ -49,7 +50,7 @@ def map_citation_type(citation_type: str) -> Tuple[Optional[str], Optional[str],
     """
     try:
         # Load the citation type mappings from the YAML configuration file.
-        with open("citation_types.yaml", "r", encoding="utf-8") as file:
+        with open(os.path.join(os.path.dirname(__file__), "citation_types.yaml"), "r", encoding="utf-8") as file:
             citation_types = yaml.safe_load(file)
     except (FileNotFoundError, yaml.YAMLError) as e:
         logger.error("Failed to load citation_types.yaml: %s", str(e))
@@ -63,7 +64,7 @@ def map_citation_type(citation_type: str) -> Tuple[Optional[str], Optional[str],
         ris_types = str.lower(type.get('ris_type', ''))
         zotero_types = str.lower(type.get ('zotero_type', ''))
 
-        if str.lower(citation_type) in ris_types or citation_type in zotero_types:
+        if str.lower(citation_type) in ris_types or str.lower(citation_type) in zotero_types:
             return type['transaction_template'], type['illiad_request_type'], type['illiad_doc_type']
             
     # No match found
